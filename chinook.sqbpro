@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/hatic/OneDrive/Belgeler/Clarusway/SQL/ITF/chinook.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3862"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,6:mainalbums"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="albums" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="61"/><column index="2" value="300"/><column index="3" value="59"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="artists" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="59"/><column index="2" value="300"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="invoices" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="68"/><column index="2" value="83"/><column index="3" value="129"/><column index="4" value="264"/><column index="5" value="132"/><column index="6" value="80"/><column index="7" value="96"/><column index="8" value="116"/><column index="9" value="40"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="playlists" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="67"/><column index="2" value="155"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="tracks" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="56"/><column index="2" value="300"/><column index="3" value="61"/><column index="4" value="90"/><column index="5" value="59"/><column index="6" value="300"/><column index="7" value="84"/><column index="8" value="63"/><column index="9" value="65"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">/* =========================
+          SELECT
+=========================== */
+/* retrieve track names */
+SELECT name FROM tracks;
+
+/* retrieve composer and track names*/
+SELECT Composer, name FROM tracks;
+
+-- display all columns in tracks table 
+SELECT * FROM albums;
+
+SELECT composer FROM tracks;
+
+SELECT DISTINCT AlbumId, MediaTypeId FROM tracks;
+
+SELECT * from tracks;
+
+SELECT name FROM tracks WHERE Composer = 'Jimi Hendrix';
+
+/* invoices tablosunda Total değeri 10$ dan büyük olan faturaların tüm bilgilerini 
+sorgulayiniz */
+SELECT *
+FROM invoices
+WHERE total &gt; 10.00 ;
+
+/*===================================================
+LIMIT
+====================================================*/
+/*invoices tablosunda Total değeri 10$'dan büyük olan 
+ilk 4 kayıt'ın InvoiceId,InvoiceDate ve total 
+bilgilerini sorgulayiniz */
+SELECT InvoiceId, InvoiceDate, total 
+FROM invoices 
+WHERE total &gt; 10 
+LIMIT 4 ;</sql><sql name="SQL 5">/*students tablosundaki en düşük ve en yüksek notu listeleyen sorguyu yazınız */
+
+SELECT MIN(Grade) AS min_grade, MAX(Grade) AS max_grade
+from students;
+
+
+-- SUM,AVG
+-------------------------------------------------------------------------------------------------	
+/* invoices  tablosundaki faturaların toplam değerini listeyiniz */
+
+SELECT ROUND(SUM(total)) as billing_total_amount
+FROM invoices;
+
+/* invoices  tablosundaki faturaların ortalama değerini listeyiniz */
+
+SELECT AVG(total) AS billing_average
+FROM invoices;
+
+
+
+/*Bu yöntem hard-coded olduğu için çok mantıklı bir çözüm değil. 
+alt-sorgu(sub-query) ile daha doğru bir yaklaşım olacaktır sonraki bölümlerde alt-sorguyu ayrıntılı bir şekilde inceleyeceğiz.*/
+
+/*===================================================
+ GROUP BY
+====================================================*/
+
+/* tracks tablosundaki her bir Bestecisinin (Composer) toplam şarkı sayısını 
+Besteci adına göre gruplandırarak listeleyen sorguyu yazınız. */
+
+SELECT Composer, COUNT(name) 
+FROM tracks
+WHERE Composer IS NOT NULL
+GROUP BY Composer;
+
+/* invoices tablosundaki her bir ülkenin (BillingCountry) fatura ortalamalarını 
+hesaplayan ve ülke bilgileri ile listeleyen sorguyu yazınız.*/
+
+SELECT BillingCountry, ROUND(AVG(total), 2) AS avg_amount
+FROM invoices
+GROUP BY BillingCountry;
+
+SELECT BillingCountry, ROUND(AVG(total), 2) AS avg_amount
+FROM invoices
+WHERE InvoiceDate BETWEEN '2009-01-01' AND '2011-12-31 00:00'
+GROUP BY BillingCountry;
+
+
+/*========================
+           JOIN 
+==========================*/
+
+
+
+
+
+
+
+</sql><sql name="SQL 6">
+/*===================================================
+LIKE
+====================================================*/
+/* tracks tablosunda Composer sutunu Bach ile biten 
+kayıtların Name bilgilerini listeyen sorguyu yazınız*/
+SELECT name,Composer
+FROM tracks
+WHERE Composer like '%Bach';
+	
+/* albulms tablosunda Title (başlık) sutununda Greatest
+ içeren kayıtların tüm bilgilerini listeyen sorguyu yazınız*/
+ SELECT *
+ FROM albums
+ WHERE Title LIKE '%Greatest%';
+ 
+ /* invoices tablosunda, 2010 ve 2019 arası bir tarihte (InvoiceDate)
+ Sadece şubat aylarında gerçekleşmiş olan faturaların tüm bilgilerini 
+ listeleyen sorguyu yazınız*/
+ 
+ SELECT *
+ FROM invoices
+ WHERE InvoiceDate LIKE '201_-02%';
+ 
+/* customers tablosunda, isimleri (FirstName) üç harfli olan müşterilerin 
+FirstName,LastName ve City bilgilerini listeleyen sorguyu yazınız*/
+ SELECT FirstName,LastName,City
+ FROM customers
+ WHERE FirstName LIKE '___';
+
+/* customers tablosunda, soyisimleri Sch veya Go ile başlayan 
+müşterilerin FirstName, LastName ve City bilgilerini listeleyen
+ sorguyu yazınız*/
+ SELECT FirstName, LastName, City 
+ FROM customers
+ WHERE LastName LIKE 'sch%' OR LastName LIKE 'go%';
+  
+/*===================================================
+	AGGREGATE FUNCTION COUNT,SUM,MIN,MAX, AVG)
+====================================================*/
+	
+-- COUNT
+------------------------------------------------------------------------------
+/* invoices tablosunda kaç adet fatura bulunduğunu döndüren sorgu yazınız */
+ SELECT count(*) -- tamamını sayar (null dahildir)
+ FROM invoices;
+
+ SELECT count(BillingState) -- NULL olanlar sayılmaz.
+ FROM invoices;
+ 
+ SELECT count(*) as num_of_null
+ FROM invoices
+ WHERE BillingState IS NULL;
+ 
+/* tracks tablosunda kaç adet farklı Composer bulunduğunu döndüren sorguyu yazınız*/
+ SELECT count(DISTINCT Composer) as num_of_composer
+ FROM tracks ;
+ 
+ 
+-- MIN,MAX
+-------------------------------------------------------------------------------------------------	
+/* tracks tablosundaki şarkı süresi en kısa olan şarkının adını ve süresi listeleyen
+sorguyu yaziniz */
+ SELECT name as song_name, MIN(Milliseconds)/1000.0 as min_duration_sc
+ FROM tracks;
+ 
+ /*students tablosundaki en düşük ve en yüksek notu listeleyen sorguyu yazınız */
+
+ SELECT MIN(Grade) as min_grade ,MAX(grade) as max_grade
+ FROM students;
+ 
+ -- SUM,AVG
+-------------------------------------------------------------------------------------------------	
+/* invoices tablosundaki faturaların toplam değerini listeyiniz */
+ SELECT ROUND(SUM(total)) as total_amount
+ FROM invoices;
+
+/* invoices tablosundaki faturaların ortalama değerini listeyiniz */
+  SELECT ROUND(AVG(total),3) as avg_amount
+  FROM invoices;
+	
+/* tracks tablosundaki şarkıların ortalama süresinden daha uzun olan 
+şarkıların adlarını listeleyiniz */
+
+ SELECT AVG(Milliseconds) as avg_duration
+ FROM tracks;
+ 
+ SELECT name, Milliseconds
+ FROM tracks
+ WHERE Milliseconds &gt; 393599.22;
+ 
+ /*Bu yöntem hard-coded olduğu için çok mantıklı bir çözüm değil. 
+alt-sorgu(sub-query) ile daha doğru bir yaklaşım olacaktır sonraki
+ bölümlerde alt-sorguyu ayrıntılı bir şekilde inceleyeceğiz.*/
+ 
+ SELECT name, Milliseconds
+ FROM tracks
+ WHERE Milliseconds &gt; (SELECT avg(Milliseconds) FROM tracks) ; 
+ 
+ /*===================================================
+ GROUP BY
+====================================================*/
+
+/* tracks tablosundaki her bir Bestecisinin (Composer) 
+toplam şarkı sayısını Besteci adına göre gruplandırarak 
+listeleyen sorguyu yazınız. */
+ SELECT Composer, Count(name) 
+ FROM tracks
+ WHERE Composer IS NOT NULL
+ GROUP BY Composer;
+ 
+ /* invoices tablosundaki her bir ülkenin (BillingCountry) 
+ fatura ortalamalarını hesaplayan ve ülke bilgileri ile 
+ listeleyen sorguyu yazınız.*/
+ 
+ SELECT BillingCountry, ROUND(AVG(total), 2) as avg_amount
+ FROM invoices
+ WHERE InvoiceDate BETWEEN '2009-01-01' AND '2011-12-31 00:00:00'
+ GROUP BY BillingCountry;
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+	</sql><current_tab id="1"/></tab_sql></sqlb_project>
