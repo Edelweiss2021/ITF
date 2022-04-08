@@ -90,6 +90,3 @@ ORDER BY b.bolum_isim, p.maas;
 			FROM personel
 			WHERE meslek = 'MUDUR' AND personel_isim IN ('MUZAFFER', 'EMINE'))			
 	ORDER BY p.maas DESC;
-			
-			
-			)p.meslek = "MUDUR" and p.personel_isim IN ('Mesut', 'Emine');
