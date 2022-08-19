@@ -1,1 +1,1 @@
-## SQL lecture notes
+## SQL lecture notes from IT fundamentals training
